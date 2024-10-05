@@ -8,6 +8,7 @@ import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class ParkourPopulator extends BlockPopulator {
@@ -26,8 +27,9 @@ public class ParkourPopulator extends BlockPopulator {
         return perimeter;
     }
 
-    private final Material[] LOOT_OPTIONS =  {Material.FLINT_AND_STEEL, Material.WATER_BUCKET, Material.LAVA_BUCKET,
-            Material.ENDER_EYE, Material.ENDER_PEARL, Material.ENDER_CHEST, Material.COOKED_BEEF, Material.OBSIDIAN};
+    private final Material[] LOOT_OPTIONS =  Arrays.stream(Material.values())
+            .filter(material -> material.isItem() && (!material.isBlock() || material == Material.OBSIDIAN))
+            .toArray(Material[]::new);
 
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion) {
@@ -79,12 +81,17 @@ public class ParkourPopulator extends BlockPopulator {
 
             var numItems = random.nextInt(3, 7);
             var inv = chest.getSnapshotInventory();
-            for (int i = 0; i < numItems; i++) {
+            for (int i = 0; i < 27; i++) {
                 var item = new ItemStack(LOOT_OPTIONS[random.nextInt(LOOT_OPTIONS.length)], 1);
                 if (item.getMaxStackSize() != 1) {
-                    item.setAmount(random.nextInt(1, 4));
+                    item.setAmount(random.nextInt(1, 10));
                 }
-                inv.setItem(random.nextInt(27), item);
+                inv.setItem(i, item);
+            }
+            if (random.nextBoolean()) {
+                inv.setItem(random.nextInt(27), new ItemStack(Material.FLINT_AND_STEEL));
+            } else {
+                inv.setItem(random.nextInt(27), new ItemStack(Material.OBSIDIAN, 10));
             }
             chest.update(true);
         }
