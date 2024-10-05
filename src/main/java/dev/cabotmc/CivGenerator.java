@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -27,6 +28,7 @@ public class CivGenerator extends ChunkGenerator {
                 .filter(material -> !material.hasGravity())
                 .filter(material -> material != Material.WATER && material != Material.LAVA)
                 .filter(material -> material.isSolid() || material.toString().toLowerCase().contains("sapling"))
+                .filter(material -> !material.toString().toLowerCase().endsWith("ice"))
                 .toList();
         ORES = VALID_BLOCKS
                 .stream()
@@ -41,7 +43,7 @@ public class CivGenerator extends ChunkGenerator {
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return List.of(new ParkourPopulator());
+        return List.of(new ParkourPopulator(), new PortalPopulator());
     }
 
     @Override
@@ -68,10 +70,24 @@ public class CivGenerator extends ChunkGenerator {
                 }
 
                 chunkData.setBlock(x, 64, z, Material.GRASS_BLOCK);
+
+                // skip the center of the world to make sure people spawn at y=64
+                if (chunkX == 0 && chunkZ == 0 && x == 0 && z == 0) {
+                    continue;
+                }
+
                 if (random.nextFloat() > 0.98) {
                     chunkData.setBlock(x, 65, z, Material.OAK_SAPLING);
                 }
-                chunkData.setBlock(x, 128, z, VALID_BLOCKS.get(random.nextInt(VALID_BLOCKS.size())));
+
+                var data = VALID_BLOCKS.get(random.nextInt(VALID_BLOCKS.size())).createBlockData();
+                if (data instanceof Waterlogged) {
+                    ((Waterlogged) data).setWaterlogged(false);
+                }
+
+                chunkData.setBlock(x, 128, z, data);
+
+
                 chunkData.setBlock(x, 128 + 64, z, Material.DIAMOND_BLOCK);
                 chunkData.setBlock(x, 256, z, Material.NETHERITE_BLOCK);
             }

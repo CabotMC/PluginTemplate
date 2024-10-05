@@ -52,6 +52,9 @@ public class ParkourPopulator extends BlockPopulator {
                 arrOffset += random.nextInt(3) + 2;
             }
             arrOffset %= CHUNK_PERIMETER.length;
+            if (arrOffset < 0) {
+                arrOffset += CHUNK_PERIMETER.length;
+            }
         }
 
     }
