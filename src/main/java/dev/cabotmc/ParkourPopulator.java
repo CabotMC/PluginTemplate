@@ -37,7 +37,7 @@ public class ParkourPopulator extends BlockPopulator {
 
         var arrOffset = 0;
 
-        var direction = new Vector2(1, 0);
+        var reverse = random.nextBoolean();
 
         for (int y = -64; y < 128; y++) {
             var offset = CHUNK_PERIMETER[arrOffset];
@@ -46,7 +46,11 @@ public class ParkourPopulator extends BlockPopulator {
             limitedRegion.setType(blockX, y, blockZ, Material.BEDROCK);
 
             // choose a random number between 3 and 5, add it to the current offset
-            arrOffset += random.nextInt(3) + 3;
+            if (reverse) {
+                arrOffset -= random.nextInt(3) + 2;
+            } else {
+                arrOffset += random.nextInt(3) + 2;
+            }
             arrOffset %= CHUNK_PERIMETER.length;
         }
 
