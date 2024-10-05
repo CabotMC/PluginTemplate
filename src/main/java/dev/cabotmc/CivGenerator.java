@@ -32,7 +32,7 @@ public class CivGenerator extends ChunkGenerator {
                 .toList();
         ORES = VALID_BLOCKS
                 .stream()
-                .filter(material -> material.toString().toLowerCase().contains("ore"))
+                .filter(material -> material.toString().toLowerCase().contains("ore") || material == Material.STONE)
                 .toList();
     }
 
