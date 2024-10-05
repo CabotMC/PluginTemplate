@@ -1,9 +1,11 @@
 package dev.cabotmc;
 
 import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -23,6 +25,9 @@ public class ParkourPopulator extends BlockPopulator {
         }
         return perimeter;
     }
+
+    private final Material[] LOOT_OPTIONS =  {Material.FLINT_AND_STEEL, Material.WATER_BUCKET, Material.LAVA_BUCKET,
+            Material.ENDER_EYE, Material.ENDER_PEARL, Material.ENDER_CHEST, Material.COOKED_BEEF, Material.OBSIDIAN};
 
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion) {
@@ -55,6 +60,33 @@ public class ParkourPopulator extends BlockPopulator {
             if (arrOffset < 0) {
                 arrOffset += CHUNK_PERIMETER.length;
             }
+        }
+
+        if (random.nextFloat() < 0.1) {
+            // generate chest level
+
+            int y = random.nextInt(80, 110);
+            for (int ox = 1; ox < 15; ox++) {
+                for (int oz = 1; oz < 15; oz++) {
+                    limitedRegion.setType(x + ox, y, z + oz, Material.QUARTZ_BLOCK);
+                }
+            }
+            y++;
+
+            limitedRegion.setType(x + 8, y, z + 8, Material.CHEST);
+            var chest = (Chest) limitedRegion.getBlockState(x + 8, y, z + 8);
+            chest.update(true);
+
+            var numItems = random.nextInt(3, 7);
+            var inv = chest.getSnapshotInventory();
+            for (int i = 0; i < numItems; i++) {
+                var item = new ItemStack(LOOT_OPTIONS[random.nextInt(LOOT_OPTIONS.length)], 1);
+                if (item.getMaxStackSize() != 1) {
+                    item.setAmount(random.nextInt(1, 4));
+                }
+                inv.setItem(random.nextInt(27), item);
+            }
+            chest.update(true);
         }
 
     }
