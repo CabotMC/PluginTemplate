@@ -13,7 +13,7 @@ import java.util.Random;
 public class PortalPopulator extends BlockPopulator {
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion) {
-        if (chunkX % 64 == 0 && chunkZ % 64 == 0 && (chunkX != 0 ^ chunkZ != 0)) {
+        if (chunkX % 64 == 0 && chunkZ % 64 == 0 && !(chunkX == 0 && chunkZ == 0)) {
             // generate an end portal at y=128
 
             // first clear out the area around the portal, 6x6
