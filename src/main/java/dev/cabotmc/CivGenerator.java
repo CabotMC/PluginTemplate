@@ -66,7 +66,11 @@ public class CivGenerator extends ChunkGenerator {
         for (int x = 0; x < 16; x+= 2) {
             for (int z = 0; z < 16; z+= 2) {
                 for (int y = -64; y < 32; y += 32) {
-                    chunkData.setBlock(x, y, z, ORES.get(random.nextInt(ORES.size())));
+                    if (random.nextBoolean() || y == -64) {
+                        chunkData.setBlock(x, y, z, ORES.get(random.nextInt(ORES.size())));
+                    } else {
+                        chunkData.setBlock(x, y, z, Material.STONE);
+                    }
                 }
 
                 chunkData.setBlock(x, 64, z, Material.GRASS_BLOCK);
