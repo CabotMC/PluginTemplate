@@ -33,7 +33,7 @@ public class ParkourPopulator extends BlockPopulator {
 
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion) {
-        if (random.nextFloat() < 0.98) {
+        if (random.nextFloat() < 0.97) {
             return;
         }
 
@@ -64,7 +64,7 @@ public class ParkourPopulator extends BlockPopulator {
             }
         }
 
-        if (random.nextFloat() < 0.1) {
+        if (random.nextFloat() < 0.25) {
             // generate chest level
 
             int y = random.nextInt(80, 110);
