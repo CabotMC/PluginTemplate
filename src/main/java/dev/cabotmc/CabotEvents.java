@@ -19,10 +19,8 @@ public class CabotEvents implements Listener {
     public static Team playersTeam = null;
 
     @EventHandler
-    public void spawn(PlayerSpawnLocationEvent event) {
-        if (event.getPlayer().getFirstPlayed() == event.getPlayer().getLastLogin()) {
-            // first spawn
-            event.setSpawnLocation(new Location(Bukkit.getWorld("world"), 0, 65, 0));
+    public void spawn(PlayerJoinEvent event) {
+        if (!event.getPlayer().hasPlayedBefore()) {
             playersTeam.addPlayer(event.getPlayer());
 
             event.getPlayer().getInventory().addItem(
