@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.server.ServerLoadEvent;
@@ -46,5 +48,17 @@ public class CabotEvents implements Listener {
         }
     }
 
-
+    @EventHandler
+    public void mine(BlockDropItemEvent e) {
+        if (e.getBlock().getLocation().getBlockY() % 64 == 0) {
+            var drops = e.getItems();
+            for (var drop : drops) {
+                if (e.getPlayer().getInventory().addItem(drop.getItemStack()).isEmpty()) {
+                    drop.remove();
+                } else {
+                    drop.teleport(e.getPlayer());
+                }
+            }
+        }
+    }
 }
