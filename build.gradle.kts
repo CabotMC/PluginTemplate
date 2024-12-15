@@ -1,8 +1,6 @@
-import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask;
-
 plugins {
     id("java")
-    id("dev.s7a.gradle.minecraft.server") version "2.1.1"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
 group = "dev.cabotmc"
@@ -14,23 +12,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 }
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
-}
-task<LaunchMinecraftServerTask>("runServer") {
-    outputs.upToDateWhen { false }
-    dependsOn("build")
-
-    doFirst {
-        copy {
-            from(layout.buildDirectory.file("libs/CabotPlugin-1.0-SNAPSHOT.jar"))
-            into(layout.buildDirectory.file("MinecraftServer/plugins"))
-        }
+tasks {
+    runServer {
+        // Configure the Minecraft version for our task.
+        // This is the only required configuration besides applying the plugin.
+        // Your plugin's jar (or shadowJar if present) will be used automatically.
+        minecraftVersion("1.21.4")
     }
-
-    jarUrl.set(LaunchMinecraftServerTask.JarUrl.Paper("1.21.1"))
-    agreeEula.set(true)
 }
