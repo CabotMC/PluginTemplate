@@ -25,5 +25,8 @@ tasks {
         // Your plugin's jar (or shadowJar if present) will be used automatically.
         minecraftVersion("1.21.4")
         jvmArgs("-Dcom.mojang.eula.agree=true")
+        downloadPlugins {
+            url("https://download.luckperms.net/1569/bukkit/loader/LuckPerms-Bukkit-5.4.152.jar")
+        }
     }
 }
