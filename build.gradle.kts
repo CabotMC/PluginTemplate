@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.13"
 }
 
 group = "dev.cabotmc"
@@ -11,8 +12,10 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
+
+
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
 }
 
 tasks {
