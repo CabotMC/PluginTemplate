@@ -23,11 +23,11 @@ public class Main extends JavaPlugin
             commands.register(
                     Commands.literal("nuke")
                             .requires(ctx -> ctx.getSender().hasPermission("cabot.nuke"))
+                            .executes(NukeCommand::run)
                             .then(
                                     Commands.argument("position", ArgumentTypes.blockPosition())
                                             .executes(NukeCommand::runPositioned)
                             )
-                            .executes(NukeCommand::run)
                             .build()
             );
         });
