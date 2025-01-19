@@ -12,11 +12,10 @@ public class Main extends JavaPlugin
     public void onEnable() {
         getLogger().info("Hello");
 
-        // tell the server to use BenryEvents to check for events
+        // tell the server to use an instance of the CabotEvents class to listen for events
         getServer().getPluginManager().registerEvents(new CabotEvents(), this);
 
         // register commands
-
         var lifecycleManager = this.getLifecycleManager();
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
